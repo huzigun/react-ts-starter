@@ -28,7 +28,6 @@ export default defineConfig({
         {
           libName: 'antd',
           style: (name) => {
-            console.log(name);
             if (name === 'col' || name === 'row') {
               return 'antd/lib/style/css.js';
             }
