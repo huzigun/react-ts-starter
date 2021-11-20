@@ -1,20 +1,23 @@
-import lessToJS from "less-vars-to-js";
-import { defineConfig } from "vite";
-import reactRefresh from "@vitejs/plugin-react-refresh";
-import vitePluginImp from "vite-plugin-imp";
-import { ViteAliases } from "vite-aliases";
-import Inspect from "vite-plugin-inspect";
-import reactJsx from "vite-react-jsx";
-import { resolve } from "path";
-import fs from "fs";
+import lessToJS from 'less-vars-to-js';
+import { defineConfig } from 'vite';
+import reactRefresh from '@vitejs/plugin-react-refresh';
+import vitePluginImp from 'vite-plugin-imp';
+import { ViteAliases } from 'vite-aliases';
+import Inspect from 'vite-plugin-inspect';
+import reactJsx from 'vite-react-jsx';
+import { resolve, join } from 'path';
+import fs from 'fs';
 
 const pathResolver = (path: string) => resolve(__dirname, path);
 const themeVariables = lessToJS(
-  fs.readFileSync(pathResolver("./config/variables.less"), "utf8")
+  fs.readFileSync(
+    pathResolver(join(__dirname, 'config', 'variables.less')),
+    'utf8',
+  ),
 );
 
 export default defineConfig({
-  base: "./",
+  base: './',
   plugins: [
     Inspect(),
     ViteAliases({}),
@@ -23,12 +26,13 @@ export default defineConfig({
     vitePluginImp({
       libList: [
         {
-          libName: "antd",
+          libName: 'antd',
           style: (name) => {
-            if (name === "col" || name === "row") {
-              return "antd/lib/style/index.less";
+            console.log(name);
+            if (name === 'col' || name === 'row') {
+              return 'antd/lib/style/css.js';
             }
-            return `antd/es/${name}/style/index.less`;
+            return `antd/es/${name}/style/css.js`;
           },
         },
       ],
@@ -41,5 +45,9 @@ export default defineConfig({
         modifyVars: themeVariables,
       },
     },
+  },
+  server: {
+    port: 8706,
+    open: true,
   },
 });
